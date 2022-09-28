@@ -1,0 +1,5 @@
+mongoose API docs:  https://mongoosejs.com/docs/guide.html
+
+delete:
+- https://mongoosejs.com/docs/api.html#model_Model-findOneAndDelete 
+-
