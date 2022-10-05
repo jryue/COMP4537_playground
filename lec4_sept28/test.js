@@ -2,10 +2,13 @@
 
 const mongoose = require('mongoose')
 
-async function main() {
-  //connect using a connection string
-  await mongoose.connect('mongodb://localhost:27017/test')
+// //recommended to wait until server connection is established before continuing
+// app.listen(5000, async () => {
+//   await mongoose.connect('mongodb://localhost:27017/test')
+// })
 
+async function main() {
+  await mongoose.connect('mongodb://localhost:27017/test')
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
 
