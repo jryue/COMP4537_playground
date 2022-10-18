@@ -1,0 +1,17 @@
+Steps in opening up Mongodb through Ubuntu terminal:
+
+1. click Windows icon and type "ubuntu" -> click enter
+2. this opens a terminal.
+3. type "sudo service mongodb start"
+4. prompts you to login -> enter password
+5.type "mongo" 
+6. "use test"
+7. "show collections"
+8. db.cities.find() -> will display all the documents for that "cities" collection
+
+
+Adding a new collection
+
+1. copy+paste JSON prepared data (like lab2) and then just paste it in the 
+ UBUNTU cli --> click ENTER
+2. 
