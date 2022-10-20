@@ -1,0 +1,4 @@
+Exercise 14:
+Develop a regular expression that will accept a dollar amount. For example, $3.56 and $1,000,000 are valid amounts, whereas $5.321 and $5,29,40 are not.
+
+Regex: \$(([0-9]{1,3}\,[0-9]{1,3})|[0-9]{1,4})+(.[0-9]+)

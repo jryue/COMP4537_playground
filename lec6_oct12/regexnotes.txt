@@ -1,0 +1,166 @@
+Regex = Regular expression
+- helps to match, find or manage text
+
+--------------------------------Important patterns------------------------------------
+\d = can be used IN PLACE of any digit from 0 to 9
+. = (a single period) can be used for ANY character   (ex. asdbASD!@# -> regex = / . /g)
+
+
+Example: you have 3 strings, how to target all the numbers?
+abc123xyz
+define "123"
+var g = 123;
+Answer: regex = \d\d\d  (notice how each \d represents each number)
+
+Example: you want to match any documents that end in '.pdf' 
+list
+- readme.md
+- document.pdf 
+- image.png 
+Answer: regex = /  ^\w+\.pdf$ /gm 
+- ^ means 
+- \w means any word 
+- + is a quantifier, means "at least one word" 
+- \. represents the dot 
+- pdf is the extension 
+- $ means end of the line 
+
+Example: bar ber bir bor bur 
+All words start with b and end with r, only middle is different 
+Answer: regex = / b[aeiou]r /g
+Followup: find all EXCEPT ber and bor 
+Answer: regex = / b[^eo]r /g    *the ^ negates those characters following it 
+
+Example: letter range, get from e to o 
+Answer: regex = /[e-o]/g 
+Followup: numbers 3 to 7
+Answer: regex = /[3-7]/g
+
+Example: beer deer feer 
+Answer: regex = /[bdf]eer/g 
+
+Example: bear beor beer beur  (all except beor and beur)
+Answer: regex = /be[^ou]r/g
+
+
+----------------------------Repetitions--------------------------------------
+how many times a character will be repeated in the text.
+'+', '*', '?'
+
+Example: br ber beer (the letter 'e' can be 0 or infinity times)
+Regex: /be*r/g (the * AFTER the letter e)      * operator
+Followup: one or more times 
+Regex: /be+r/g (this will target 'ber beer')   + operator
+
+Optional character 
+Example: color, colour (the 'u' is optional)
+Regex: /colou?r/g                              ? operator
+
+Express number of times repetition 
+Example: ber beer beeer beeeer (we want to target letter e 2 times )
+Regex: /be{2}r/g   * use curly braces and add a number 
+Followup: letter e at least 3 times
+Regex: /be{3,}r/g   
+Followup: the letter e can only be 1 to 3 times 
+Regex: /be{1,3}r/g 
+
+Example: Release 10/9/2021  -> find text with 4 numbers side by side 
+Regex: /[0-9]{4}/g 
+Followup: at least 2 numbers
+Regex: /[0-9]{2,}/g 
+Followup: 1 to 4 numbers 
+Regex: /[0-9]{1,4}/g 
+
+---------------------------------------GROUPING---------------------------------------
+Example: ha-ha, haa-haa 
+We want to get the 'haa' group 
+Regex: /(haa)/g   *use the parantheses and desired expression inside 
+Followup: multiple groups can denote with \1, \2, etc.. 
+Regex: / (ha)-\1,(haa)-\2 /g 
+
+Example: cat rat dog 
+Regex: / (c|r)at|dog /g   * use pipeline character as an OR oepration
+
+------------------------------- SPECIAL CHARACTERS -------------------------------
+use '\' as escape character in front of those special characters 
+Special: { } [ ] / \ + * . $^ | ? 
+Example: (*)ASterisk.
+Regex: /(\*|\.)/g
+
+'^' to indicate line start 
+Example: 
+1. 3 eggs
+2. 1 tsp
+3. 1 tsp 
+Regex: / ^[0-9] /g     * will only grab 1, 2, 3 beginning of each string 
+
+$ to indicate the value at end of line 
+Example: https.asdas.html (select the html)
+Regex: / html$ /gm
+
+\w - to only find letters, numbers, and the underscore 
+Example: absdWSD123_?! 
+Regex: / \w /g   will only select absdWSD123_ 
+Followup: except Word characters 
+Regex: / \W /g   will only select ?! 
+
+\d - only numbers 
+Regex: / \d /g 
+Followup: anything EXCEPT numbers 
+Regex: / \D /g 
+
+\s - to find whitespace 
+Regex: / \s /g 
+Followup: anything EXCEPT whitespace
+Regex: / \S /g 
+
+------------------------------ LOOKAROUNDS -----------------------------------
+If we want the phrase to come before or after another phrase, we need to "lookaround"
+
+Positive lookahead: (?=)
+Text: Date 4 Aug 3 PM  (we want to target the hour thats before the 'PM')
+Regex: / \d+(?=PM) /g 
+this basically means any number (1 or more digits from the + sign) thats following 
+the 'PM' text 
+
+Negative lookahead: (?!)
+Example: select numbers other than the hour value of same example
+Regex: / \d+(?!PM) /g     *the PM immediately follows the ?! inside parantheses 
+
+Positive lookBEHIND (?<=)
+Text: Product Code: 1064 Price: $5   
+We only want to select the price value that precedes the $ sign 
+Regex: / (?<=\$)\d+ /g 
+Write the positive lookbehind before expression 
+*target special character using \$ 
+
+Negative LookBEHIND (?<!)
+Example: select numbers other than the price value. 
+Regex: / (?<!\$)\d+ /g
+
+---------------------------------- FLAGS --------------------------------------
+Flags change output of the expression. called "modifiers"
+
+Global flag:  
+this is the '/g' at the end of the regex expression
+If no flag is used, regex will only return the first match. global selects ALL matches
+Text:  domain.com, test.com, site.com 
+Regex: / \w+\.com /g
+
+Multiline flag:
+Regex sees all text as one line. Using multiline flag handles each line separately
+the '/m' flag 
+Text: 
+domain.com 
+test.com 
+site.com 
+Regex: / \w+\.com /gm    *both global and multiline 
+
+Case-insensitivity 
+the '/i' flag removes case-sensitive nature 
+
+---------------------------- GREEDY MATCHING ----------------------------------
+ber beer beeer beeeeer 
+Regex: / .*r /   will return all matches that end in r 
+Followup: lazy matching will return the first match only 
+Regex: / .*?r / will only return 'ber' 

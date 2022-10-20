@@ -7,7 +7,7 @@ const { populatePokemons } = require("./populatePokemons.js")
 const { getTypes } = require("./getTypes.js")
 const { handleErr } = require("./errorHandler.js")
 const app = express()
-const port = 5000
+const port = 5004
 var pokeModel = null;
 
 const start = async () => {
@@ -123,6 +123,21 @@ app.patch('/api/v1/pokemon/:id', async (req, res) => {
     }
   } catch (err) { res.json(handleErr(err)) }
 })
+
+app.get('/api/v1/pokemonsAdvancedFiltering', async (req, res) => {
+
+  try {
+    const pokemons = await pokeModel.find(req.query);
+    res.json(pokemons[0])
+  } catch (err) {
+    res.send({msg: "No pokemon matches that filter"})
+  }
+})
+
+// //have to form another route in case of improper queries
+// app.get('/api/v1/pokemonsAdvancedFiltering', async (req, res) => {
+
+// })
 
 app.get("*", (req, res) => {
   res.json({

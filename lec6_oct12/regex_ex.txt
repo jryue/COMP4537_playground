@@ -1,0 +1,40 @@
+Ex 1
+cat.
+896.
+?=+.
+abc1 
+
+Regex: (\d|\w|.)+\.
+
+Ex 2
+can 
+man
+fan 
+dan 
+ran 
+pan 
+
+We only want can, man, fan 
+Regex: [cmf]an 
+
+Ex 3.
+hog 
+dog 
+bog 
+All except bog 
+Regex: [^b]og    -> the ^ exclude the following character(s) 
+
+Ex 4.
+wazzzzzzup
+wazzzup 
+wazup  
+only want 2 z's or more 
+regex: z{3,} 
+
+Ex 5. 
+1 file found? -match
+2 files found? -match 
+No files found. -skip
+Notice how the matches have a question mark 
+Regex: found?\? 
+
