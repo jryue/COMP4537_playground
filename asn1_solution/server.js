@@ -124,7 +124,7 @@ app.patch('/api/v1/pokemon/:id', async (req, res) => {
   } catch (err) { res.json(handleErr(err)) }
 })
 
-app.get('/api/v1/pokemonsAdvancedFiltering', async (req, res) => {
+app.get('/api/v1/pokemonsAdvancedFiltering1', async (req, res) => {
 
   try {
     const pokemons = await pokeModel.find(req.query);
@@ -134,10 +134,108 @@ app.get('/api/v1/pokemonsAdvancedFiltering', async (req, res) => {
   }
 })
 
-// //have to form another route in case of improper queries
-// app.get('/api/v1/pokemonsAdvancedFiltering', async (req, res) => {
+//have to form another route in case of improper queries
+app.get('/api/v1/pokemonsAdvancedFiltering2', async (req, res) => {
+  try {
+    const {
+      id,
+      "base.HP" : baseHP,
+      "base.Attack": baseAttack,
+      "base.Defense": baseDefense,
+      "base.Speed": baseSpeed,
+      "base.Speed Attack": baseSpAttack,
+      "base.Speed Defense": baseSpDefense,
+      "name.english": nameEnglish,
+      "name.japanese": nameJapanese,
+      "name.chinese": nameChinese,
+      "name.french": nameFrench,
+      type,
+      page,
+      sort,
+      filteredProperty,
+      hitsPerPage,
+    } = req.query;
 
-// })
+    const query = {};
+
+    //passing single ID
+    //if (id) query.id = Number(id)
+
+    //if id is given multiple values split with commas
+    if (id) query.id = { $in: id.split(",").map((element) => element.trim()) };
+    console.log(query.id)
+
+
+    if (baseHP) query["base.HP"] = baseHP;
+    if (baseAttack) query["base.Attack"] = baseAttack;
+    if (baseDefense) query["base.Defense"] = baseDefense;
+    if (baseSpAttack) query["base.Speed Attack"] = baseSpAttack;
+    if (baseSpDefense) query["base.Speed Defense"] = baseSpDefense;
+    if (baseSpeed) query["base.Speed"] = baseSpeed;
+
+    if (nameEnglish) query["name.english"] = nameEnglish;
+    if (nameJapanese) query["name.japanese"] = nameJapanese;
+    if (nameChinese) query["name.chinese"] = nameChinese;
+    if (nameFrench) query["name.french"] = nameFrench;
+
+    if (page) query.page = page;
+    if (sort) query.sort = sort;
+    if (filteredProperty) query.filteredProperty = filteredProperty;
+    if (hitsPerPage) query.hitsPerPage = hitsPerPage;
+
+    // getting rid of the spaces and comma from the type queries
+    if (type)
+      query.type = { $in: type.split(",").map((element) => element.trim()) };
+
+    const mongooseQuery = pokeModel.find(query);
+    if (sort) mongooseQuery.sort(sort);
+
+    const pokemons = await mongooseQuery;
+
+    res.send({hits: pokemons, key: "asdas"})
+  } catch (err) {
+    res.send({msg: "No pokemon matches filter"})
+  }
+})
+
+//return all the pokemons that has HP less than or equal to 20 and Attack more than 30
+app.get('/api/v1/pokemonsAdvancedFiltering3', async (req, res) => {
+  try {
+    const { comparisonOperators } = req.query
+    let query = {}
+    let queryInput = ""
+    let doc = {}
+
+    if (comparisonOperators) {
+      //replace all operators with mongoose operators
+      query.comparisonOperators = {
+        //get rid of the spaces and comma from the type queries
+        $in: comparisonOperators.split(",").map(item => item.trim()
+        .replace(/==/g, " $eq ")
+        .replace(/!=/g, " $ne ")
+        .replace(/>=/g, " $gte ")
+        .replace(/<=/g, " $lte ")
+        .replace(/>/g, " $gt ")
+        .replace(/</g, " $lt "))
+      }
+      //split the query into an array of strings and join them with a space
+      query.comparisonOperators.$in = query.comparisonOperators.$in.map((item) => {
+        let [stat, mongooseOperator, value] = item.split(" ")
+        //edit stat to match the schema
+        stat = "base." + stat
+        //if the value is a number, convert it to a number type
+        return { [stat]: { [mongooseOperator]: value } }
+      }
+  )}
+
+  //if there is no comparison operator, return all the pokemons
+  console.log(query.comparisonOperators.$in)
+  doc = await pokeModel.find({$and: query.comparisonOperators.$in})
+  res.json(doc)
+  } catch (err) {
+    console.log(err);
+  }
+})
 
 app.get("*", (req, res) => {
   res.json({
