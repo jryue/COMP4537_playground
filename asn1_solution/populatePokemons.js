@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const https = require('https');
-const ProgressBar = require('progress');
+const ProgressBar = require('progress'); 
 
 const populatePokemons = (pokeSchema) => {
   return new Promise((resolve, reject) => {

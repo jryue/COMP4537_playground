@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const { Schema } = mongoose;
-const https = require('https');
+const https = require('https'); 
 
 const getTypes = () => {
   return new Promise((resolve, reject) => {
