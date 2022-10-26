@@ -1,0 +1,12 @@
+In JS, there are built-in error handlers
+- RangeError
+- ReferenceError
+- SyntaxError
+- TypeError
+
+Special results
+ie. when there was an exception, do you remember returning a (-1) because you didn't know what to send as a response? --> concept of "special result"
+
+make sure to know "instanceof" usage
+- used for err.name and err.message 
+
