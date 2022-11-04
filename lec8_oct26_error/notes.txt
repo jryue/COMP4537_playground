@@ -10,3 +10,16 @@ ie. when there was an exception, do you remember returning a (-1) because you di
 make sure to know "instanceof" usage
 - used for err.name and err.message 
 
+Important conclusions:
+
+1. As long as you are throwing an exception from synchronous code, the built-in Express error handler will catch error from you, and wont crash server
+
+2. For synchronous code, we don't need a try..catch because there is a hidden global try catch block provided by ExpressJS
+
+3. expressJS does not handle asynchronous errors by default, so we need to use
+use a try-catch or a Promise to handle asynchronous errors
+
+4. next(error) vs. return next(error) 
+
+return next(error) --> ends the function
+next(error) --> hands error to error handler, but you still execute code AFTER IT
