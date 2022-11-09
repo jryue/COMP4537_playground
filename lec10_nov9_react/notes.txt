@@ -1,0 +1,26 @@
+ReactDOM
+- createRoot() injects HTML into the root element 
+
+Fragment
+- just a container that holds child elements (dummy container)
+
+install extensions..
+- ES7 + React/Redux/React    
+
+useEffect()
+- takes 2 arguments (a callback function, and options)
+- the callback function can take fetch(), cors functions etc.. 
+
+
+const [pokemon, setPokemon] = React.useState([])
+'setPokemon' sets the data into the 'pokemon' list variable
+
+
+next week lab
+- app.use(express.static('./public'))
+- copy the pokemon assignment folder and the react app folder 
+
+
+React rules:
+1. every component should start with a capital letter (ie. Pokemon.js)
+2. to pass data into a function (component), use the 'props' property
